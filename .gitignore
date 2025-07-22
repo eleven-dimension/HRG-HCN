@@ -1,0 +1,107 @@
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+*.manifest
+*.spec
+
+# Environment & dependencies
+.env
+.venv/
+venv/
+ENV/
+env.bak/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# pytest
+.cache/
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.log
+nosetests.xml
+test-output/
+.cache/
+.junit.xml
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pyright
+typings/
+
+# pylint
+pylint-report.txt
+pylint-output.txt
+
+# Bandit security scanner
+bandit.yaml
+
+# ========================
+# Editors/IDEs
+# ========================
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# JetBrains IDEs
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# ========================
+# Operating Systems
+# ========================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~ 
+.nfs*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ========================
+# Custom Project Folders
+# ========================
+debug/
