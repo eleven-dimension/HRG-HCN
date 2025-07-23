@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 
-from models import MonotonicFunction
+from layers import MonotonicFunction
 
 
 def test_monotonic_function():
