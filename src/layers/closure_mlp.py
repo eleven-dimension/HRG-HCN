@@ -4,17 +4,19 @@ import torch.nn as nn
 
 class ClosureMLP(nn.Module):
     def __init__(
-        self, num_agents: int, num_layers: int, hidden_dim: int, output_dim: int
+        self, graph_height: int, graph_width: int, hidden_dim: int, output_dim: int
     ):
         super().__init__()
-        self.num_agents = num_agents
-        self.num_layers = num_layers
+        self.graph_height = graph_height
+        self.graph_width = graph_width
         self.register_buffer(
-            "log1p_N", torch.log1p(torch.tensor(num_agents, dtype=torch.float32))
+            "log1p_N", torch.log1p(torch.tensor(graph_width, dtype=torch.float32))
         )
         self.register_buffer(
             "log1p_KN2",
-            torch.log1p(torch.tensor(num_layers * num_agents**2, dtype=torch.float32)),
+            torch.log1p(
+                torch.tensor(graph_height * graph_width**2, dtype=torch.float32)
+            ),
         )
 
         self.mlp = nn.Sequential(
