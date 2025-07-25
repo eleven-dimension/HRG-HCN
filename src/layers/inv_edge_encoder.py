@@ -5,11 +5,11 @@ import torch.nn as nn
 # layer-invariant
 class InvEdgeEncoder(nn.Module):
     def __init__(
-        self, num_agent_ids: int, embedding_dim: int, hidden_dim: int, output_dim: int
+        self, graph_width: int, embedding_dim: int, hidden_dim: int, output_dim: int
     ):
         super().__init__()
-        self.parent_embedding_layer = nn.Embedding(num_agent_ids, embedding_dim)
-        self.child_embedding_layer = nn.Embedding(num_agent_ids, embedding_dim)
+        self.parent_embedding_layer = nn.Embedding(graph_width, embedding_dim)
+        self.child_embedding_layer = nn.Embedding(graph_width, embedding_dim)
         self.edge_mlp = nn.Sequential(
             nn.Linear(embedding_dim * 2, hidden_dim),
             nn.ReLU(),
