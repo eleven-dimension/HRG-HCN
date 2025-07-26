@@ -2,10 +2,12 @@ import numpy as np
 import torch
 
 from layers import MonotonicFunction
+from configs import MonotonicFunctionCfg
 
 
 def test_monotonic_function():
-    monotonic_layer = MonotonicFunction(5)
+    cfg = MonotonicFunctionCfg(5)
+    monotonic_layer = MonotonicFunction(cfg)
     monotonic_layer.eval()
     with torch.no_grad():
         arr = monotonic_layer().detach().cpu().numpy()

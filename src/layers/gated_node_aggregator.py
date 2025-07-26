@@ -2,12 +2,16 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+from configs import GatedNodeAggregatorCfg
+
 
 class GatedNodeAggregator(nn.Module):
-    def __init__(self, feature_dim: int, hidden_dim: int):
+    def __init__(self, cfg: GatedNodeAggregatorCfg):
         super().__init__()
         self.mlp = nn.Sequential(
-            nn.Linear(3 * feature_dim, hidden_dim), nn.ReLU(), nn.Linear(hidden_dim, 3)
+            nn.Linear(3 * cfg.feature_dim, cfg.hidden_dim),
+            nn.ReLU(),
+            nn.Linear(cfg.hidden_dim, 3),
         )
 
     def forward(self, node_embedding, closure_embedding, incoming_edges_embedding):

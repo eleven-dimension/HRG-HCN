@@ -1,19 +1,19 @@
 import torch
 import torch.nn as nn
 
+from configs import InvEdgeEncoderCfg
+
 
 # layer-invariant
 class InvEdgeEncoder(nn.Module):
-    def __init__(
-        self, graph_width: int, embedding_dim: int, hidden_dim: int, output_dim: int
-    ):
+    def __init__(self, cfg: InvEdgeEncoderCfg):
         super().__init__()
-        self.parent_embedding_layer = nn.Embedding(graph_width, embedding_dim)
-        self.child_embedding_layer = nn.Embedding(graph_width, embedding_dim)
+        self.parent_embedding_layer = nn.Embedding(cfg.graph_width, cfg.embedding_dim)
+        self.child_embedding_layer = nn.Embedding(cfg.graph_width, cfg.embedding_dim)
         self.edge_mlp = nn.Sequential(
-            nn.Linear(embedding_dim * 2, hidden_dim),
+            nn.Linear(cfg.embedding_dim * 2, cfg.hidden_dim),
             nn.ReLU(),
-            nn.Linear(hidden_dim, output_dim),
+            nn.Linear(cfg.hidden_dim, cfg.output_dim),
         )
 
     def forward(self, parent_ids, child_ids):
