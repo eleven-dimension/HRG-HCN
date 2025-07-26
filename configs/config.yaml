@@ -1,0 +1,11 @@
+defaults:
+  - _self_  
+  - shared@globals: globals
+  - layers: inv_edge_encoder
+  - blocks: incoming_edges_agg
+
+width:          ${globals.width}
+height:         ${globals.height}
+embedding_dim:  ${globals.embedding_dim}
+
+model: ${blocks}

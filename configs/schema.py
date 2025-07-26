@@ -2,30 +2,18 @@ from dataclasses import dataclass, field
 from omegaconf import MISSING
 
 
-# 0.  Mix‑ins for graph dimensions (shared)
-@dataclass
-class EmbeddingCfg:
-    dim: int = MISSING
-
-
-@dataclass
-class GraphWidthMixin:
-    graph_width: int = MISSING
-
-
-@dataclass
-class GraphHeightMixin:
-    graph_height: int = MISSING
-
-
-@dataclass
-class GraphGeometryMixin(GraphWidthMixin, GraphHeightMixin):
-    pass
-
-
 # 1.  Leaf‑level layer configs
 @dataclass
-class MonotonicFunctionCfg(GraphHeightMixin):
+class InvEdgeEncoderCfg:
+    width: int = MISSING
+    embedding_dim: int = MISSING
+    hidden_dim: int = MISSING
+    output_dim: int = MISSING
+
+
+@dataclass
+class MonotonicFunctionCfg:
+    height: int = MISSING
     epsilon: float = 1e-6
 
 
@@ -36,27 +24,23 @@ class GatedNodeAggregatorCfg:
 
 
 @dataclass
-class ClosureMLPCfg(GraphGeometryMixin):
+class ClosureMLPCfg:
+    width: int = MISSING
+    height: int = MISSING
     hidden_dim: int = MISSING
     output_dim: int = MISSING
 
 
+# 2.  Block‑level configs
 @dataclass
-class InvEdgeEncoderCfg(GraphWidthMixin):
-    embedding_dim: int = MISSING
-    hidden_dim: int = MISSING
-    output_dim: int = MISSING
-
-
-# 2.  Block‑level (a stack of layers)
-@dataclass
-class IncomingEdgesAggregatorCfg(GraphWidthMixin):
+class IncomingEdgesAggregatorCfg:
+    width: int = MISSING
     edge_encoder: InvEdgeEncoderCfg = field(default_factory=InvEdgeEncoderCfg)
 
 
 @dataclass
 class NodeEncoderCfg:
-    embedding: EmbeddingCfg = field(default_factory=EmbeddingCfg)
+    embedding_dim: int = MISSING
     monotonic_function: MonotonicFunctionCfg = field(
         default_factory=MonotonicFunctionCfg
     )
@@ -69,18 +53,11 @@ class NodeEncoderCfg:
     )
 
 
-# 3.  Model‑level  (top of the hierarchy)
-
-
+# 3.  Model‑level config (root)
 @dataclass
-class GraphCfg(GraphGeometryMixin):
-    pass
+class ModelCfg:
+    width: int = MISSING
+    height: int = MISSING
+    embedding_dim: int = MISSING
 
-
-# @dataclass
-# class GCNConfig:
-#     """What `NodeEncoder` will receive."""
-
-#     graph: GraphCfg = GraphCfg()
-#     embedding: EmbeddingCfg = EmbeddingCfg()
-#     layer: LayerCfg = LayerCfg()
+    node_encoder: NodeEncoderCfg = field(default_factory=NodeEncoderCfg)

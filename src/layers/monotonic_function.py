@@ -11,7 +11,7 @@ from configs import MonotonicFunctionCfg
 class MonotonicFunction(nn.Module):
     def __init__(self, cfg: MonotonicFunctionCfg):
         super().__init__()
-        self.k = cfg.graph_height
+        self.k = cfg.height
         self.epsilon = cfg.epsilon
         self.a = nn.Parameter(torch.randn(self.k + 1))
 
@@ -22,7 +22,7 @@ class MonotonicFunction(nn.Module):
 
 
 if __name__ == "__main__":
-    cfg = MonotonicFunctionCfg(graph_height=5)
+    cfg = MonotonicFunctionCfg(height=5)
     v = MonotonicFunction(cfg)
     v.eval()
     with torch.no_grad():

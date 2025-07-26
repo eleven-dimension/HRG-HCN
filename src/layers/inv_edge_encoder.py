@@ -8,8 +8,8 @@ from configs import InvEdgeEncoderCfg
 class InvEdgeEncoder(nn.Module):
     def __init__(self, cfg: InvEdgeEncoderCfg):
         super().__init__()
-        self.parent_embedding_layer = nn.Embedding(cfg.graph_width, cfg.embedding_dim)
-        self.child_embedding_layer = nn.Embedding(cfg.graph_width, cfg.embedding_dim)
+        self.parent_embedding_layer = nn.Embedding(cfg.width, cfg.embedding_dim)
+        self.child_embedding_layer = nn.Embedding(cfg.width, cfg.embedding_dim)
         self.edge_mlp = nn.Sequential(
             nn.Linear(cfg.embedding_dim * 2, cfg.hidden_dim),
             nn.ReLU(),

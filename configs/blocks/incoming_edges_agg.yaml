@@ -1,0 +1,7 @@
+_target_: src.blocks.IncomingEdgesAggregator
+_recursive_: false
+
+cfg:
+  _recursive_: false 
+  width: ${globals.width}
+  edge_encoder: ${layers}

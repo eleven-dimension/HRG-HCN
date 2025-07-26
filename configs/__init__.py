@@ -5,7 +5,6 @@ from .schema import (
     InvEdgeEncoderCfg,
     IncomingEdgesAggregatorCfg,
     NodeEncoderCfg,
-    EmbeddingCfg,
 )
 
 
@@ -16,5 +15,4 @@ __all__ = [
     "InvEdgeEncoderCfg",
     "IncomingEdgesAggregatorCfg",
     "NodeEncoderCfg",
-    "EmbeddingCfg",
 ]
