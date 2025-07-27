@@ -1,6 +1,6 @@
 _target_: src.layers.InvEdgeEncoder
 
 width:   ${globals.width}
-embedding_dim: ${globals.embedding_dim}
+embedding_dim: 32
 hidden_dim:    64
 output_dim:    ${globals.embedding_dim}
