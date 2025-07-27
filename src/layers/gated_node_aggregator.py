@@ -15,18 +15,16 @@ class GatedNodeAggregator(nn.Module):
         )
 
     def forward(self, node_embedding, closure_embedding, incoming_edges_embedding):
-        # Concatenate embeddings along feature dimension
         concat = torch.cat(
             [node_embedding, closure_embedding, incoming_edges_embedding], dim=-1
-        )  # shape: [3 * feature_dim]
+        )  # shape: [num_nodes, 3 * feature_dim]
 
-        gates = self.mlp(concat)  # shape: [3]
-        gates = F.softmax(gates, dim=-1)  # normalize to sum to 1
+        gates = self.mlp(concat)
+        gates = F.softmax(gates, dim=-1)  # shape: [num_nodes, 3]
 
-        # Weighted sum
         output = (
-            gates[0] * node_embedding
-            + gates[1] * closure_embedding
-            + gates[2] * incoming_edges_embedding
+            gates[:, 0:1] * node_embedding
+            + gates[:, 1:2] * closure_embedding
+            + gates[:, 2:3] * incoming_edges_embedding
         )
         return output
