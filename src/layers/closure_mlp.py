@@ -25,11 +25,11 @@ class ClosureMLP(nn.Module):
             nn.Linear(cfg.hidden_dim, cfg.output_dim),
         )
 
-    # x: shape: (batch_size, 3)
-    def forward(self, x):
-        closure = x[:, 0]
-        fanout = torch.log1p(x[:, 1]) / self.log1p_N
-        subtree_edge_cnt = torch.log1p(x[:, 2]) / self.log1p_KN2
+    # closure_vector: Size[num_nodes, 3]
+    def forward(self, closure_vector):
+        closure = closure_vector[:, 0]
+        fanout = torch.log1p(closure_vector[:, 1]) / self.log1p_N
+        subtree_edge_cnt = torch.log1p(closure_vector[:, 2]) / self.log1p_KN2
 
-        x_scaled = torch.stack([closure, fanout, subtree_edge_cnt], dim=1)
-        return self.mlp(x_scaled)
+        closure_vector_scaled = torch.stack([closure, fanout, subtree_edge_cnt], dim=1)
+        return self.mlp(closure_vector_scaled)
