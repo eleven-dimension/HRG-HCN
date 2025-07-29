@@ -3,7 +3,7 @@ import torch
 from torch_geometric.nn import MessagePassing
 
 
-class DownwardMessagePassing(MessagePassing):
+class UpwardMessagePassing(MessagePassing):
     def __init__(self):
         super().__init__()
 
