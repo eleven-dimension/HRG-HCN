@@ -3,6 +3,8 @@ from typing import Dict, List, Tuple, Self
 from collections import defaultdict
 import yaml
 
+import torch
+
 # [parent_index, child_index]
 Node = Tuple[int, int]
 Edge = Tuple[Node, Node]
@@ -101,6 +103,32 @@ class ReasoningGraph:
 
                 self.subtree_size_bit_map[d][w] = subtree_edges_cnt
 
+    def to_tensor(self):
+        # depths: Size[num_nodes, 1]
+        # closure_vectors: Size[num_nodes, 3]
+        # edge_index: Size[2, num_edges]
+        depths = torch.tensor(
+            [node[0] for node in self.nodes], dtype=torch.int
+        ).unsqueeze(1)
+        closure_vectors = torch.tensor(
+            [
+                [
+                    1 if self.fanout_bit_map[r][c] == 0 else 0,
+                    self.fanout_bit_map[r][c],
+                    self.subtree_size_bit_map[r][c],
+                ]
+                for r, c in self.nodes
+            ],
+            dtype=torch.int,
+        )
+        edges = [
+            (self.node_to_index[parent], self.node_to_index[child])
+            for parent, children in self.adjacency_list.items()
+            for child in children
+        ]
+        edge_index = torch.tensor(edges, dtype=torch.long).t().contiguous()
+        return depths, closure_vectors, edge_index
+
     @classmethod
     def from_yaml(cls, filepath: str) -> Self:
         with open(filepath, "r") as f:
@@ -109,20 +137,3 @@ class ReasoningGraph:
         if data.get("edges") is not None:
             edges = [[tuple(edge) for edge in edge_list] for edge_list in data["edges"]]
         return cls(data["max_depth"], data["agent_num"], data["root_index"], edges)
-
-
-if __name__ == "__main__":
-    g = ReasoningGraph(
-        depth=4,
-        width=4,
-        root_index=1,
-        edges=[
-            [(1, 0), (1, 2), (1, 3)],  # layer 0 -> 1
-            [(0, 1), (2, 0), (2, 3), (3, 1)],  # layer 1 -> 2
-            [(1, 2)],  # layer 2 -> 3
-        ],
-    )
-    print("Adjacency list:", g.adjacency_list)
-    print("Subtree edge counts:")
-    for row in g.subtree_size_bit_map:
-        print(row)
